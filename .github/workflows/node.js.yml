@@ -1,24 +1,28 @@
-name: CI - Nanthesh Kannan's React App
+name: Node.js CI
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
         with:
-          repository: 'actions/checkout'
-          ref: v2
-      - name: Use Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 20
+          node-version: '14'
+
       - name: Install dependencies
         run: npm install
+
       - name: Run tests
         run: npm test
-      - name: Build project
+
+      - name: Build
         run: npm run build
