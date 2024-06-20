@@ -1,38 +1,24 @@
-name: Node.js CI
+name: CI - Nanthesh Kannan's React App
 
 on:
   push:
-    branches: ["main"]
-  pull_request:
-    branches: ["main"]
+    branches: [ main ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [14.x, 16.x, 18.x]
-
     steps:
       - uses: actions/checkout@v2
-
-      - name: Set up Node.js ${{ matrix.node-version }}
+        with:
+          repository: 'actions/checkout'
+          ref: v2
+      - name: Use Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node-version }}
-
+          node-version: 20
       - name: Install dependencies
-        run: npm ci
-
-      - name: Output package.json
-        run: cat package.json
-
+        run: npm install
       - name: Run tests
         run: npm test
-        env:
-          CI: true
-
-      - name: Output npm debug log
-        if: failure()
-        run: cat /home/runner/.npm/_logs/2024-06-20T16_42_20_580Z-debug.log
+      - name: Build project
+        run: npm run build
